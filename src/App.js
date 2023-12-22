@@ -10,11 +10,13 @@ const Square = ({ clickFn, i, val }) => {
 
 function App() {
   const [currPlayer, setCurrPlayer] = useState('X');
-  const [status, setStatus] = useState('Next player: X');
+  const [status, setStatus] = useState(`Next player: ${currPlayer}`);
+  const [gameOver, setGameOver] = useState(false)
 
   useEffect(() => {
-    setStatus(`Next player: ${currPlayer}`)
-  }, [currPlayer])
+    let newStatus = gameOver ? `Winner: ${currPlayer}`: `Next player: ${currPlayer}`;
+    setStatus(newStatus)
+  }, [currPlayer, gameOver])
 
   const handleReset = () => {
     let squares = document.querySelectorAll('.square');
@@ -28,20 +30,39 @@ function App() {
     let squares = document.querySelectorAll('.square');
     squares[i].textContent = currPlayer;
     let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
-    setCurrPlayer(updatedPlayer);
-    isWinner();
+    let winner = isWinner();
+    winner ? setStatus(`Winner: ${currPlayer}`) : setCurrPlayer(updatedPlayer);
   };
 
   const isWinner = () => {
+    let wins = [
+      [1, 1, 1, 0, 0, 0, 0, 0, 0], // row 1
+      [0, 0, 0, 1, 1, 1, 0, 0, 0], // row 2
+      [0, 0, 0, 0, 0, 0, 1, 1, 1], // row 3
+      [1, 0, 0, 1, 0, 0, 1, 0, 0], // column 1
+      [0, 1, 0, 0, 1, 0, 0, 1, 0], // column 2
+      [0, 0, 1, 0, 0, 1, 0, 0, 1], // column 3
+      [1, 0, 0, 0, 1, 0, 0, 0, 1], // diagonal 1
+      [0, 0, 1, 0, 1, 0, 1, 0, 0], // diagonal 1
+    ];
     let squares = document.querySelectorAll('.square');
     let squareVals = [];
-    for(let i =0; i < squares.length; i++) {
-      let temp = {
-        val: squares[i].textContent,
-        i
-      }
-      squareVals.push(temp)
+    for (let i = 0; i < squares.length; i++) {
+      let val = squares[i].textContent === currPlayer ? 1 : 0;
+      squareVals.push(val);
     }
+    let i =0, j=0;
+    while(j < 8 && i < 8) {
+      if(wins[i][j] === squareVals[j]) {
+        j++
+      } else {
+        i++;
+        j = 0;
+        if(i === 8) return false;
+      }
+    }
+    setGameOver(true)
+    return true
   }
 
   const generateSquares = () => {
