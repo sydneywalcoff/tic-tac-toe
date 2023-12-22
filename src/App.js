@@ -20,6 +20,13 @@ function App() {
     return squareArr;
   };
 
+  const handleReset = () => {
+    let squares = document.querySelectorAll('.square');
+    for(let i =0; i < squares.length; i++) {
+      squares[i].textContent = '';
+    }
+  }
+
   return (
     <div className="App">
       <div className="content">  
@@ -27,6 +34,7 @@ function App() {
         <div className="grid">
           {generateSquares()}
         </div>
+        <button className="reset" onClick={handleReset}>Reset</button>
       </div>
     </div>
   );
