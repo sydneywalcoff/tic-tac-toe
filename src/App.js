@@ -2,16 +2,9 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 
-const Square = ({ currPlayer, setCurrPlayer, i }) => {
-  const [currState, setCurrState] = useState(undefined);
-
-  const handleClick = () => {
-    setCurrState(currPlayer)
-    currPlayer === 'X' ? setCurrPlayer('O') : setCurrPlayer('X');
-  };
-
+const Square = ({ clickFn, i, val }) => {
   return (
-    <div key={`square${i}`} className='square' onClick={handleClick}>{currState}</div>
+    <div key={`square${i}`} className='square' onClick={() => clickFn(i)}>{val}</div>
   );
 };
 
@@ -23,14 +16,6 @@ function App() {
     setStatus(`Next player: ${currPlayer}`)
   }, [currPlayer])
 
-  const generateSquares = () => {
-    let squareArr = [];
-    for (let i = 1; i <= 9; i++) {
-      squareArr.push(<Square i={i} currPlayer={currPlayer} setCurrPlayer={setCurrPlayer} />)
-    }
-    return squareArr;
-  };
-
   const handleReset = () => {
     let squares = document.querySelectorAll('.square');
     for (let i = 0; i < squares.length; i++) {
@@ -38,6 +23,22 @@ function App() {
       setCurrPlayer('X');
     }
   }
+
+  const handleClick = (i) => {
+    let squares = document.querySelectorAll('.square');
+    squares[i].textContent = currPlayer;
+    let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
+    setCurrPlayer(updatedPlayer);
+  };
+
+  const generateSquares = () => {
+    let squareArr = [];
+    for (let i = 0; i < 9; i++) {
+      squareArr.push(<Square i={i} clickFn={handleClick} val="" />)
+    }
+    return squareArr;
+  };
+
 
   return (
     <div className="App">
