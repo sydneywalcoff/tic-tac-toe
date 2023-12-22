@@ -15,7 +15,7 @@ function App() {
   const generateSquares = () => {
     let squareArr = [];
     for (let i = 1; i <= 9; i++) {
-      squareArr.push(<Square currPlayer={currPlayer} setCurrPlayer={setCurrPlayer}/>)
+      squareArr.push(<Square i={i} currPlayer={currPlayer} setCurrPlayer={setCurrPlayer}/>)
     }
     return squareArr;
   };
