@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import Square from './Square';
-
 import './App.css';
+
+const Square = ({ currPlayer, setCurrPlayer, i }) => {
+  const [currState, setCurrState] = useState(undefined);
+
+  const handleClick = () => {
+    setCurrState(currPlayer)
+    currPlayer === 'X' ? setCurrPlayer('O') : setCurrPlayer('X');
+  };
+
+  return (
+    <div key={`square${i}`} className='square' onClick={handleClick}>{currState}</div>
+  );
+};
 
 function App() {
   const [currPlayer, setCurrPlayer] = useState('X');
@@ -15,21 +26,22 @@ function App() {
   const generateSquares = () => {
     let squareArr = [];
     for (let i = 1; i <= 9; i++) {
-      squareArr.push(<Square i={i} currPlayer={currPlayer} setCurrPlayer={setCurrPlayer}/>)
+      squareArr.push(<Square i={i} currPlayer={currPlayer} setCurrPlayer={setCurrPlayer} />)
     }
     return squareArr;
   };
 
   const handleReset = () => {
     let squares = document.querySelectorAll('.square');
-    for(let i =0; i < squares.length; i++) {
+    for (let i = 0; i < squares.length; i++) {
       squares[i].textContent = '';
+      setCurrPlayer('X');
     }
   }
 
   return (
     <div className="App">
-      <div className="content">  
+      <div className="content">
         <div className="status">{status}</div>
         <div className="grid">
           {generateSquares()}
