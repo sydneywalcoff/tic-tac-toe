@@ -29,7 +29,20 @@ function App() {
     squares[i].textContent = currPlayer;
     let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
     setCurrPlayer(updatedPlayer);
+    isWinner();
   };
+
+  const isWinner = () => {
+    let squares = document.querySelectorAll('.square');
+    let squareVals = [];
+    for(let i =0; i < squares.length; i++) {
+      let temp = {
+        val: squares[i].textContent,
+        i
+      }
+      squareVals.push(temp)
+    }
+  }
 
   const generateSquares = () => {
     let squareArr = [];
