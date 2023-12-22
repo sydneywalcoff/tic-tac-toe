@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+
+import Square from './Square';
+
 import './App.css';
 
 function App() {
+  const [currPlayer, setCurrPlayer] = useState('X');
+  const [status, setStatus] = useState('Next player: X');
+
+  useEffect(() => {
+    setStatus(`Next player: ${currPlayer}`)
+  }, [currPlayer])
+
+  const generateSquares = () => {
+    let squareArr = [];
+    for (let i = 1; i <= 9; i++) {
+      squareArr.push(<Square currPlayer={currPlayer} setCurrPlayer={setCurrPlayer}/>)
+    }
+    return squareArr;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="content">  
+        <div className="status">{status}</div>
+        <div className="grid">
+          {generateSquares()}
+        </div>
+      </div>
     </div>
   );
 }
