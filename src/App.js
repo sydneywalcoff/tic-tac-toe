@@ -30,10 +30,12 @@ function App() {
 
   const handleClick = (i) => {
     let squares = document.querySelectorAll('.square');
-    squares[i].textContent = currPlayer;
-    let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
-    let isWinner = calculateWinner();
-    !isWinner && setCurrPlayer(updatedPlayer);
+    if(!squares[i].textContent) {
+      squares[i].textContent = currPlayer;
+      let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
+      let isWinner = calculateWinner();
+      !isWinner && setCurrPlayer(updatedPlayer);
+    }
   };
 
   const calculateWinner = () => {
