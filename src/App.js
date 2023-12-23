@@ -15,14 +15,16 @@ function App() {
 
   useEffect(() => {
     let newStatus = gameOver ? `Winner: ${currPlayer}`: `Next player: ${currPlayer}`;
-    setStatus(newStatus)
+    setStatus(newStatus);
   }, [currPlayer, gameOver])
 
   const handleReset = () => {
     let squares = document.querySelectorAll('.square');
+    setCurrPlayer('X');
+    setGameOver(false);
+
     for (let i = 0; i < squares.length; i++) {
       squares[i].textContent = '';
-      setCurrPlayer('X');
     }
   }
 
@@ -30,11 +32,11 @@ function App() {
     let squares = document.querySelectorAll('.square');
     squares[i].textContent = currPlayer;
     let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
-    let winner = isWinner();
-    winner ? setStatus(`Winner: ${currPlayer}`) : setCurrPlayer(updatedPlayer);
+    let isWinner = calculateWinner();
+    !isWinner && setCurrPlayer(updatedPlayer);
   };
 
-  const isWinner = () => {
+  const calculateWinner = () => {
     let wins = [
       [1, 1, 1, 0, 0, 0, 0, 0, 0], // row 1
       [0, 0, 0, 1, 1, 1, 0, 0, 0], // row 2
@@ -52,7 +54,7 @@ function App() {
       squareVals.push(val);
     }
     let i =0, j=0;
-    while(j < 8 && i < 8) {
+    while(j <= 8 && i <= 8) {
       if(wins[i][j] === squareVals[j]) {
         j++
       } else {
@@ -61,8 +63,8 @@ function App() {
         if(i === 8) return false;
       }
     }
-    setGameOver(true)
-    return true
+    setGameOver(true);
+    return true;
   }
 
   const generateSquares = () => {
