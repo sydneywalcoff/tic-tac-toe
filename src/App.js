@@ -11,10 +11,11 @@ const Square = ({ clickFn, i, val, gameOver }) => {
 function App() {
   const [currPlayer, setCurrPlayer] = useState('X');
   const [status, setStatus] = useState(`Next player: ${currPlayer}`);
-  const [gameOver, setGameOver] = useState(false)
+  const [gameOver, setGameOver] = useState(false);
+  let isWinner;
 
   useEffect(() => {
-    let newStatus = gameOver ? `Winner: ${currPlayer}`: `Next player: ${currPlayer}`;
+    let newStatus = gameOver ? isWinner ? `Winner: ${currPlayer}` : 'Tie ' : `Next player: ${currPlayer}`;
     setStatus(newStatus);
   }, [currPlayer, gameOver])
 
@@ -33,8 +34,18 @@ function App() {
     if(!squares[i].textContent) {
       squares[i].textContent = currPlayer;
       let updatedPlayer = currPlayer === 'X' ? 'O' : 'X';
-      let isWinner = calculateWinner();
-      !isWinner && setCurrPlayer(updatedPlayer);
+      isWinner = calculateWinner();
+      let isBoardFull = true;
+      for(let entry of squares.entries()) {
+        if(!entry[1].textContent) {
+          isBoardFull = false;
+          break;
+        }
+      }
+
+      !isWinner && !isBoardFull && setCurrPlayer(updatedPlayer);
+
+      if(!isWinner && isBoardFull) setGameOver(true)
     }
   };
 
