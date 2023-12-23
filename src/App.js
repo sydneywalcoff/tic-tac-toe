@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 
-const Square = ({ clickFn, i, val }) => {
+const Square = ({ clickFn, i, val, gameOver }) => {
   return (
-    <div key={`square${i}`} className='square' onClick={() => clickFn(i)}>{val}</div>
+    <div key={`square${i}`} className={`square ${gameOver ? 'disabled' : ''}`} onClick={() => clickFn(i)}>{val}</div>
   );
 };
 
@@ -70,7 +70,7 @@ function App() {
   const generateSquares = () => {
     let squareArr = [];
     for (let i = 0; i < 9; i++) {
-      squareArr.push(<Square i={i} clickFn={handleClick} val="" />)
+      squareArr.push(<Square i={i} clickFn={handleClick} val="" gameOver={gameOver}/>)
     }
     return squareArr;
   };
